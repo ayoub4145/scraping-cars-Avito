@@ -1,19 +1,18 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import chromedriver_autoinstaller
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import pandas as pd
 import time
 
 def scrape_voitures_selenium(budget, max_pages=2):
-    chromedriver_autoinstaller.install()
 
     options = Options()
     options.add_argument("--headless") 
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
 
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
     voitures = []
     
     
