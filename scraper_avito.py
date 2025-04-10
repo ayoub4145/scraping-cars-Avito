@@ -19,6 +19,7 @@ def scrape_voitures_selenium(budget, max_pages=2):
    
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
+    print(driver.title)
     voitures = []
     
     
