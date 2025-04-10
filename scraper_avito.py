@@ -47,7 +47,9 @@ def scrape_voitures_selenium(budget, max_pages=2):
                 print(f"Prix récupéré: {price_text}")
 
                 price = int(price_text.replace("DH", "").replace(" ", "").replace(" ", "").strip())
-
+                
+                if price <= budget:
+                    print(f"✅ Annonce retenue - Titre: {title} | Prix: {price} DH")  
                 if price <= budget:
                     voitures.append({
                         "Titre": title,
