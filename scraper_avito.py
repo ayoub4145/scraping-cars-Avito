@@ -2,28 +2,17 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.core.os_manager import ChromeType
 import pandas as pd
 import time
 
-# Fonction pour obtenir le driver Firefox
-def get_driver():
-    options = Options()
-    options.add_argument("--headless")  
-    options.add_argument("--disable-gpu")  
-
-    # Retourner un driver Firefox
-    return webdriver.Firefox(
-        service=Service(GeckoDriverManager().install()),
-        options=options
-    )
-    
 def scrape_voitures_selenium(budget, max_pages=2):
 
-    driver = get_driver()
+    options = Options()
+    options.add_argument("--headless") 
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920x1080")
+
+    driver = webdriver.Chrome(options=options)
     voitures = []
     
     
