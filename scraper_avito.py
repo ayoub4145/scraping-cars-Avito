@@ -64,4 +64,6 @@ def scrape_voitures_selenium(budget, max_pages=2):
 
 
     driver.quit()
+    print(f"Nombre d'annonces trouvées (prix ≤ {budget} DH) : {len(voitures)}")
+
     return pd.DataFrame(voitures)
