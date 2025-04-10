@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
@@ -11,8 +12,9 @@ def scrape_voitures_selenium(budget, max_pages=2):
     options.add_argument("--headless") 
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
-
-    driver = webdriver.Chrome(options=options)
+    options.add_argument("--no-sandbox")
+    
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     voitures = []
     
     
