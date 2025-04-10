@@ -9,8 +9,6 @@ import time
 
 def scrape_voitures_selenium(budget, max_pages=2):
 
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    chemin_driver = os.path.join(base_path, "chromedriver.exe")
     options = Options()
     options.add_argument("--headless") 
     options.add_argument("--disable-gpu")
@@ -18,7 +16,8 @@ def scrape_voitures_selenium(budget, max_pages=2):
     options.add_argument("--no-sandbox")
     
     # Lancer le navigateur
-    service = Service(executable_path=chemin_driver)
+   
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     voitures = []
     
