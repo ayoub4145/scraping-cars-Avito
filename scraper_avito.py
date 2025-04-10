@@ -8,7 +8,7 @@ import time
 
 def scrape_voitures_selenium(budget, max_pages=2):
 
-    chemin_driver = "C:\\Users\\Student\\Documents\\LADID\\DataMining_warehouse\\Projet1_scarping_Avito\\scraping-cars-Avito\\chromedriver.exe"  # ou le chemin absolu si besoin
+    chemin_driver = "C:\\Users\\Student\\Documents\\LADID\\DataMining_warehouse\\Projet1_scarping_Avito\\scraping-cars-Avito\\chromedriver-win64\\chromedriver.exe"
     options = Options()
     options.add_argument("--headless") 
     options.add_argument("--disable-gpu")
