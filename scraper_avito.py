@@ -3,9 +3,11 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from webdriver_manager.core.os_manager import ChromeType
 import pandas as pd
-import os
 import time
+
+
 
 def scrape_voitures_selenium(budget, max_pages=2):
 
@@ -15,9 +17,7 @@ def scrape_voitures_selenium(budget, max_pages=2):
     options.add_argument("--window-size=1920x1080")
     options.add_argument("--no-sandbox")
     
-    # Lancer le navigateur
-   
-    service = Service(ChromeDriverManager().install())
+    service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
     driver = webdriver.Chrome(service=service, options=options)
     print(driver.title)
     voitures = []
