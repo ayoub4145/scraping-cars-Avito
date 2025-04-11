@@ -1,6 +1,13 @@
 import streamlit as st
 from scraper_avito import scrape_voitures_selenium
 
+st.set_page_config(
+    page_title="Avito Car Scraper",  
+    page_icon="https://play-lh.googleusercontent.com/buf02418eUSzj_A0nn21WCdC3qo8qKjju2DA4uYf5eQtEJ0QFtBHZJ120u-elJVT6Us",                     
+    layout="wide",                       # or "centered"
+    initial_sidebar_state="auto"        # or "expanded", "collapsed"
+)
+
 st.title("🚗Voitures Avito")
 
 budget = st.number_input("💰 Budget max (DH)", value=100000,step=50000)
