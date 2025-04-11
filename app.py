@@ -27,7 +27,6 @@ page_bg_img = '''
     width: 100%;
     background-color: rgba(255, 255, 255, 0.75);  /* Couche blanche semi-transparente pour lisibilité */
     opacity: 0.25;
-    z-index: -1;
 }
 
 /* Header transparent avec flou */
