@@ -9,7 +9,7 @@ st.set_page_config(
 )
 page_bg_img = '''
 <style>
-body:: before{
+[data-testid="stAppViewContainer"]:: before{
  content: "";
     position: absolute;
     top: 0;
