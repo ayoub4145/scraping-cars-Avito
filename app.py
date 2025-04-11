@@ -9,21 +9,31 @@ st.set_page_config(
 )
 page_bg_img = '''
 <style>
-[data-testid="stAppViewContainer"]:: before{
- content: "";
+/* Image de fond avec opacité (transparence) */
+[data-testid="stAppViewContainer"] {
+    position: relative;
+    background-image: url("https://e0.pxfuel.com/wallpapers/119/566/desktop-wallpaper-top-71-car-background-spot-new-super-car-thumbnail.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+[data-testid="stAppViewContainer"]::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: URL("https://e0.pxfuel.com/wallpapers/119/566/desktop-wallpaper-top-71-car-background-spot-new-super-car-thumbnail.jpg")
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.25; /* transparence du fond (0 = invisible, 1 = opaque) */
-    z-index: -1; /* derrière le contenu */
+    background-color: rgba(255, 255, 255, 0.75);  /* Couche blanche semi-transparente pour lisibilité */
+    z-index: -1;
 }
 
+/* Header transparent avec flou */
+[data-testid="stHeader"], .st-emotion-cache-18ni7ap {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+}
 </style>
 '''
 
