@@ -12,7 +12,7 @@ page_bg_img = '''
 /* Image de fond avec opacité (transparence) */
 [data-testid="stAppViewContainer"] {
     position: relative;
-    background-image: url("https://e0.pxfuel.com/wallpapers/119/566/desktop-wallpaper-top-71-car-background-spot-new-super-car-thumbnail.jpg");
+    background-image: url("https://i.pinimg.com/736x/1c/33/12/1c33121f0041bf40ad6e69d74ea2fcaf.jpg")
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -26,6 +26,7 @@ page_bg_img = '''
     height: 100%;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.75);  /* Couche blanche semi-transparente pour lisibilité */
+    opacity: 0.25;
     z-index: -1;
 }
 
