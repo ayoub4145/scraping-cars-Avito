@@ -7,26 +7,7 @@ st.set_page_config(
     layout="wide",                       # or "centered"
     initial_sidebar_state="auto"        # or "expanded", "collapsed"
 )
-page_bg_img = '''
-<style>
-/* Image de fond avec opacité (transparence) */
-[data-testid="stAppViewContainer"] {
-    position: relative;
-    background-image: URL("https://img.freepik.com/premium-photo/front-view-generic-brandless-moder-car_110488-502.jpg?semt=ais_hybrid&w=740");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
 
-/* Header transparent avec flou */
-[data-testid="stHeader"], .st-emotion-cache-18ni7ap {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-}
-</style>
-'''
-
-st.markdown(page_bg_img, unsafe_allow_html=True)
 st.title("🚗Voitures Avito")
 
 budget = st.number_input("💰 Budget max (DH)", value=100000,step=50000)
