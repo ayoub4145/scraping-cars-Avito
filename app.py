@@ -12,21 +12,10 @@ page_bg_img = '''
 /* Image de fond avec opacité (transparence) */
 [data-testid="stAppViewContainer"] {
     position: relative;
-    background-image: URL("https://static.vecteezy.com/system/resources/thumbnails/027/004/082/small/cute-retro-beach-car-free-photo.jpg");
+    background-image: URL("https://img.freepik.com/premium-photo/front-view-generic-brandless-moder-car_110488-502.jpg?semt=ais_hybrid&w=740");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-[data-testid="stAppViewContainer"]::before {
-    content: "";
-    position: absolute
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.75);  /* Couche blanche semi-transparente pour lisibilité */
-    opacity: 0.25;
 }
 
 /* Header transparent avec flou */
