@@ -12,7 +12,7 @@ page_bg_img = '''
 /* Image de fond avec opacité (transparence) */
 [data-testid="stAppViewContainer"] {
     position: relative;
-    background-image: url("https://i.pinimg.com/736x/1c/33/12/1c33121f0041bf40ad6e69d74ea2fcaf.jpg")
+    background-image: URL("https://static.vecteezy.com/system/resources/thumbnails/027/004/082/small/cute-retro-beach-car-free-photo.jpg")
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -72,4 +72,4 @@ if st.button("🔍 Chercher"):
 st.markdown("### À propos")
 st.markdown("Cette application utilise le web scraping pour extraire des annonces de voitures d'occasion sur Avito. Les données sont récupérées en temps réel et affichées ici.")
 st.markdown("**Note:** Veuillez respecter les conditions d'utilisation du site [Avito](https://www.avito.ma/) lors de l'utilisation de cette application.")
-st.markdown("Développé par [Ayoub BERHILI](https://github.com/ayoub4145)")
+#st.markdown("Développé par [Ayoub BERHILI](https://github.com/ayoub4145)")
