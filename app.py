@@ -12,7 +12,7 @@ page_bg_img = '''
 /* Image de fond avec opacité (transparence) */
 [data-testid="stAppViewContainer"] {
     position: relative;
-    background-image: URL("https://static.vecteezy.com/system/resources/thumbnails/027/004/082/small/cute-retro-beach-car-free-photo.jpg")
+    background-image: URL("https://static.vecteezy.com/system/resources/thumbnails/027/004/082/small/cute-retro-beach-car-free-photo.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -20,7 +20,7 @@ page_bg_img = '''
 
 [data-testid="stAppViewContainer"]::before {
     content: "";
-    position: absolute;
+    position: absolute
     top: 0;
     left: 0;
     height: 100%;
