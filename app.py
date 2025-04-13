@@ -42,4 +42,4 @@ if st.button("🔍 Chercher"):
 st.markdown("### À propos")
 st.markdown("Cette application utilise le web scraping pour extraire des annonces de voitures d'occasion sur Avito. Les données sont récupérées en temps réel et affichées ici.")
 st.markdown("**Note:** Veuillez respecter les conditions d'utilisation du site [Avito](https://www.avito.ma/) lors de l'utilisation de cette application.")
-#st.markdown("Développé par [Ayoub BERHILI](https://github.com/ayoub4145)")
+st.markdown("Développé par [Ayoub BERHILI](https://github.com/ayoub4145)")
