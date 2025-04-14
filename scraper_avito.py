@@ -29,7 +29,7 @@ def scrape_voitures_selenium(budget, max_pages=20):
     #has_next_page = True
 
      #while has_next_page:
-    for page in range(1, max_pages + 1):
+     for page in range(1, max_pages + 1):
         url = f"https://www.avito.ma/fr/maroc/voitures_d_occasion-à_vendre?o={page}"
         driver.get(url)
         time.sleep(3)  # laisser le temps au JS de charger
