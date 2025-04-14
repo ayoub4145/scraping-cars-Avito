@@ -25,11 +25,11 @@ def scrape_voitures_selenium(budget, max_pages=20):
     voitures = []
     
     
-    page = 1
-    has_next_page = True
+    #page = 1
+    #has_next_page = True
 
-     while has_next_page:
-    #for page in range(1, max_pages + 1):
+     #while has_next_page:
+    for page in range(1, max_pages + 1):
         url = f"https://www.avito.ma/fr/maroc/voitures_d_occasion-à_vendre?o={page}"
         driver.get(url)
         time.sleep(3)  # laisser le temps au JS de charger
@@ -64,7 +64,7 @@ def scrape_voitures_selenium(budget, max_pages=20):
 
             except Exception as e:
                 continue
-        page += 1  # Passer à la page suivante
+        #page += 1  # Passer à la page suivante
 
     print(f"Nombre d'annonces trouvées (prix ≤ {budget} DH) : {len(voitures)}")
 
