@@ -1,6 +1,13 @@
 import streamlit as st
 from scraper_avito import scrape_voitures_selenium
 
+st.set_page_config(
+    page_title="Avito Car Scraper",  
+    page_icon="https://play-lh.googleusercontent.com/buf02418eUSzj_A0nn21WCdC3qo8qKjju2DA4uYf5eQtEJ0QFtBHZJ120u-elJVT6Us",                     
+    layout="wide",                       # or "centered"
+    initial_sidebar_state="auto"        # or "expanded", "collapsed"
+)
+
 st.title("🚗Voitures Avito")
 
 budget = st.number_input("💰 Budget max (DH)", value=100000,step=50000)
@@ -34,5 +41,5 @@ if st.button("🔍 Chercher"):
             st.markdown("---")
 st.markdown("### À propos")
 st.markdown("Cette application utilise le web scraping pour extraire des annonces de voitures d'occasion sur Avito. Les données sont récupérées en temps réel et affichées ici.")
-st.markdown("**Note:** Veuillez respecter les conditions d'utilisation du site Avito lors de l'utilisation de cette application.")
+st.markdown("**Note:** Veuillez respecter les conditions d'utilisation du site [Avito](https://www.avito.ma/) lors de l'utilisation de cette application.")
 st.markdown("Développé par [Ayoub BERHILI](https://github.com/ayoub4145)")

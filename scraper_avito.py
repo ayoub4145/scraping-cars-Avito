@@ -28,8 +28,8 @@ def scrape_voitures_selenium(budget, max_pages=10):
     #page = 1
     #has_next_page = True
 
-    # while has_next_page:
-    for page in range(1, max_pages + 1):
+     #while has_next_page:
+     for page in range(1, max_pages + 1):
         url = f"https://www.avito.ma/fr/maroc/voitures_d_occasion-à_vendre?o={page}"
         driver.get(url)
         time.sleep(3)  # laisser le temps au JS de charger
@@ -37,8 +37,8 @@ def scrape_voitures_selenium(budget, max_pages=10):
         # Récupérer tous les blocs d’annonces (chaque annonce est un lien <a>)
         ads = driver.find_elements(By.CSS_SELECTOR, '.sc-1jge648-0.jZXrfL')
         print(f"🔍 {len(ads)} annonces trouvées sur la page {page}")
-        # if len(ads) == 0:
-        #     has_next_page = False  # Si aucune annonce n'est trouvée, on arrête
+         if len(ads) == 0:
+             has_next_page = False  # Si aucune annonce n'est trouvée, on arrête
         for ad in ads:
             try:
                 title = ad.find_element(By.CSS_SELECTOR, '.sc-1x0vz2r-0.iHApav').text
@@ -66,8 +66,13 @@ def scrape_voitures_selenium(budget, max_pages=10):
                 continue
         #page += 1  # Passer à la page suivante
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e9a4f8810664a4b67005df02f9af978de9a76307
     print(f"Nombre d'annonces trouvées (prix ≤ {budget} DH) : {len(voitures)}")
+    driver.quit()
+
     driver.quit()
 
     return pd.DataFrame(voitures)
