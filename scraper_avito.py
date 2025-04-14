@@ -9,7 +9,7 @@ import time
 
 
 
-def scrape_voitures_selenium(budget, max_pages=2):
+def scrape_voitures_selenium(budget, max_pages=20):
 
     options = Options()
     options.add_argument("--headless") 
