@@ -9,7 +9,7 @@ import time
 
 
 
-def scrape_voitures_selenium(budget, max_pages=2):
+def scrape_voitures_selenium(budget, max_pages=10):
 
     options = Options()
     options.add_argument("--headless") 
@@ -67,7 +67,7 @@ def scrape_voitures_selenium(budget, max_pages=2):
         #page += 1  # Passer à la page suivante
 
 
-    driver.quit()
     print(f"Nombre d'annonces trouvées (prix ≤ {budget} DH) : {len(voitures)}")
+    driver.quit()
 
     return pd.DataFrame(voitures)
