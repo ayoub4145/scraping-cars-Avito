@@ -1,45 +1,54 @@
+# app.py
+
 import streamlit as st
+import pandas as pd
+import sqlite3
+import os
 from scraper_avito import scrape_voitures_selenium
 
-st.set_page_config(
-    page_title="Avito Car Scraper",  
-    page_icon="https://play-lh.googleusercontent.com/buf02418eUSzj_A0nn21WCdC3qo8qKjju2DA4uYf5eQtEJ0QFtBHZJ120u-elJVT6Us",                     
-    layout="wide",                       # or "centered"
-    initial_sidebar_state="auto"        # or "expanded", "collapsed"
+st.set_page_config(page_title="🚗 Voitures Avito", layout="wide")
+st.title("🚗 Recherche automatique de voitures sur Avito")
+
+DB_PATH = "voitures.db"
+
+# 🔁 Scraping si la base n'existe pas
+if not os.path.exists(DB_PATH):
+    st.info("🔄 Scraping en cours (1ère exécution)...")
+    scrape_voitures_selenium()  
+
+# 🎯 Choix du budget AVANT de charger les données
+budget = st.slider("💰 Budget maximum (DH)", min_value=10000, max_value=500000, step=5000)
+
+# 📦 Charger les données filtrées depuis SQLite
+@st.cache_data
+def load_filtered_data(budget_max):
+    conn = sqlite3.connect(DB_PATH)
+    query = "SELECT * FROM voitures WHERE \"Prix (DH)\" <= ? ORDER BY \"Prix (DH)\" ASC"
+    df = pd.read_sql_query(query, conn, params=(budget_max,))
+    conn.close()
+    return df
+
+# Charger les données filtrées selon le budget
+df_filtré = load_filtered_data(budget)
+
+st.write(f"🔍 {len(df_filtré)} voiture(s) trouvée(s) pour un budget ≤ {budget:,} DH")
+
+# 🖼️ Affichage des résultats
+for _, row in df_filtré.iterrows():
+    with st.container():
+        cols = st.columns([1, 2])
+        with cols[0]:
+            st.image(row["Image"], width=180)
+        with cols[1]:
+            st.subheader(row["Titre"])
+            st.write(f"💸 **Prix :** {row['Prix (DH)']:,} DH")
+            st.markdown(f"[🔗 Voir l'annonce sur Avito]({row['Lien']})")
+        st.markdown("---")
+
+# 📥 Export CSV
+st.download_button(
+    "📥 Télécharger les résultats (.csv)",
+    df_filtré.to_csv(index=False).encode('utf-8'),
+    "voitures_filtrées.csv",
+    "text/csv"
 )
-
-st.title("🚗Voitures Avito")
-
-budget = st.number_input("💰 Budget max (DH)", value=100000,step=50000)
-
-if st.button("🔍 Chercher"):
-    st.info("Chargement...")
-    df = scrape_voitures_selenium(budget)
-
-    if df.empty:
-        st.warning("Aucune voiture trouvée.")
-    else:
-        # Bouton pour exporter en CSV
-        st.subheader("Exporter les résultats")
-        csv_button = st.download_button(
-        label="📥 Exporter en CSV",
-        data=df.to_csv(index=False).encode('utf-8'),
-        file_name="voitures_avito.csv",
-        mime="text/csv"
-        )
-        for _, row in df.iterrows():
-            if 'Image' in row and isinstance(row['Image'], str) and row['Image'].startswith(('http://', 'https://')):
-                st.image(row['Image'], width=300)
-            else:
-                st.warning("Image non disponible")
-            st.markdown(f"### {row['Titre']}")
-            if 'Prix (DH)' in row and isinstance(row['Prix (DH)'], (int, float)):
-                st.markdown(f"💸 {row['Prix (DH)']} DH")
-            else:
-                st.warning("Prix non disponible")
-            st.markdown(f"[🔗 Voir annonce]({row.Lien})")
-            st.markdown("---")
-st.markdown("### À propos")
-st.markdown("Cette application utilise le web scraping pour extraire des annonces de voitures d'occasion sur Avito. Les données sont récupérées en temps réel et affichées ici.")
-st.markdown("**Note:** Veuillez respecter les conditions d'utilisation du site [Avito](https://www.avito.ma/) lors de l'utilisation de cette application.")
-st.markdown("Développé par [Ayoub BERHILI](https://github.com/ayoub4145)")

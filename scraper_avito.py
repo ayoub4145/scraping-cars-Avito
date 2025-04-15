@@ -1,60 +1,63 @@
+# scraper_avito.py
+
 from selenium import webdriver
+import undetected_chromedriver as uc
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.common.by import By
 from webdriver_manager.core.os_manager import ChromeType
 import pandas as pd
 import time
+import sqlite3
 
+def scrape_voitures_selenium(max_pages=100):
+    try:
+        print("🚀 Démarrage du scraping...")
 
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--window-size=1920x1080")
+        options.add_argument("--disable-dev-shm-usage")
 
-def scrape_voitures_selenium(budget, max_pages=10):
+        try:
+        #     service = EdgeService(executable_path="msedgedriver.exe")
+        #     driver = webdriver.Edge(service=service, options=options)
+            driver = uc.Chrome(options=options)
+        except Exception as e:
+            print("❌ Erreur WebDriver :", e)
+            return pd.DataFrame()
 
-    options = Options()
-    options.add_argument("--headless") 
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-dev-shm-usage")
+        voitures = []
+        page = 1
 
-    options.add_argument("--window-size=1920x1080")
-    options.add_argument("--no-sandbox")
-    
-    service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
-    driver = webdriver.Chrome(service=service, options=options)
-    print(driver.title)
-    voitures = []
-    
-    
-    #page = 1
-    #has_next_page = True
+        while True:
+            url = f"https://www.avito.ma/fr/maroc/voitures_d_occasion-à_vendre?o={page}"
+            print(f"📄 Chargement de la page {page} : {url}")
 
-     #while has_next_page:
-    for page in range(1, max_pages + 1):
-        url = f"https://www.avito.ma/fr/maroc/voitures_d_occasion-à_vendre?o={page}"
-        driver.get(url)
-        time.sleep(3)  # laisser le temps au JS de charger
+            driver.get(url)
+            time.sleep(3)
 
-        # Récupérer tous les blocs d’annonces (chaque annonce est un lien <a>)
-        ads = driver.find_elements(By.CSS_SELECTOR, '.sc-1jge648-0.jZXrfL')
-        print(f"🔍 {len(ads)} annonces trouvées sur la page {page}")
-        if len(ads) == 0:
-             has_next_page = False  # Si aucune annonce n'est trouvée, on arrête
-        for ad in ads:
-            try:
-                title = ad.find_element(By.CSS_SELECTOR, '.sc-1x0vz2r-0.iHApav').text
-                price_text = ad.find_element(By.CSS_SELECTOR, '.sc-1x0vz2r-0.dJAfqm.sc-b57yxx-3.eTHoJR').text
-                image_url = ad.find_element(By.CSS_SELECTOR, '.sc-bsm2tm-3.krcAcS').get_attribute('src')
-                link = ad.get_attribute('href')
+            ads = driver.find_elements(By.CSS_SELECTOR, '.sc-1jge648-0.jZXrfL')
+            print(f"🔍 Page {page} | {len(ads)} annonces trouvées")
 
-                # Affichage du titre et du prix récupéré pour déboguer
-                print(f"Titre: {title}")
-                print(f"Prix récupéré: {price_text}")
+            if len(ads) == 0 or page > max_pages:
+                break
 
-                price = int(price_text.replace("DH", "").replace(" ", "").replace(" ", "").strip())
-                
-                if price <= budget:
-                    print(f"✅ Annonce retenue - Titre: {title} | Prix: {price} DH")  
-                if price <= budget:
+            for ad in ads:
+                try:
+                    title = ad.find_element(By.CSS_SELECTOR, '.sc-1x0vz2r-0.iHApav').text
+                    price_text = ad.find_element(By.CSS_SELECTOR, '.sc-1x0vz2r-0.dJAfqm.sc-b57yxx-3.eTHoJR').text
+                    image_url = ad.find_element(By.CSS_SELECTOR, '.sc-bsm2tm-3.krcAcS').get_attribute('src')
+                    link = ad.get_attribute('href')
+                    if "non" in price_text.lower():  # <-- ignore les prix non spécifiés
+                     print(f"⚠️ Annonce sans prix : {title}")
+                     continue
+                    price = int(price_text.replace("DH", "").replace(" ", "").replace(" ", "").strip())
+
                     voitures.append({
                         "Titre": title,
                         "Prix (DH)": price,
@@ -62,13 +65,40 @@ def scrape_voitures_selenium(budget, max_pages=10):
                         "Lien": link
                     })
 
-            except Exception as e:
-                continue
-        #page += 1  # Passer à la page suivante
+                except Exception as e:
+                    print(f"⚠️ Erreur lors de l'extraction des données : {e}")
+                    continue
 
-    print(f"Nombre d'annonces trouvées (prix ≤ {budget} DH) : {len(voitures)}")
-    driver.quit()
+            page += 1
 
-    driver.quit()
+        driver.quit()
+        if not voitures:
+            print("❌ Aucune voiture scrapée. Vérifiez le site ou les sélecteurs.")
+            return pd.DataFrame()
 
-    return pd.DataFrame(voitures)
+        print(f"✅ Scraping terminé. {len(voitures)} voitures collectées.")
+        df = pd.DataFrame(voitures)
+        print("🧪 Aperçu des données scrapées :")
+        print(df.head())
+
+        # Sauvegarde dans Excel
+        df.to_csv("voitures.xlsx", index=False)
+
+        # Sauvegarde dans SQLite
+        try:
+            with sqlite3.connect("voitures.db") as conn:
+                dtype = {
+                    "Titre": "TEXT",
+                    "Prix (DH)": "INTEGER",
+                    "Image": "TEXT",
+                    "Lien": "TEXT"
+                }
+                df.to_sql("voitures", conn, if_exists="replace", index=False, dtype=dtype)
+                print("💾 Données insérées dans la table 'voitures'")
+        except Exception as e:
+            print(f"❌ Erreur lors de l'insertion dans SQLite : {e}")
+    finally:
+        driver.quit()
+        print("🛑 Fermeture du navigateur.")
+        
+    return df
