@@ -14,7 +14,8 @@ DB_PATH = "voitures.db"
 # 🔁 Scraping si la base n'existe pas
 if not os.path.exists(DB_PATH):
     st.info("🔄 Scraping en cours (1ère exécution)...")
-    scrape_voitures_selenium()  
+    scrape_voitures_selenium(max_pages=100)
+    st.success("✅ Scraping terminé !")  
 
 # 🎯 Choix du budget AVANT de charger les données
 budget = st.slider("💰 Budget maximum (DH)", min_value=10000, max_value=500000, step=5000)

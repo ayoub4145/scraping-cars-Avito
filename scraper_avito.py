@@ -99,6 +99,8 @@ def scrape_voitures_selenium(max_pages=100):
             print(f"❌ Erreur lors de l'insertion dans SQLite : {e}")
     finally:
         driver.quit()
+        conn.close()
+        print("🔒 Connexion SQLite fermée.")
         print("🛑 Fermeture du navigateur.")
         
     return df
