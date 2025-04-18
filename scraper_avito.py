@@ -12,7 +12,7 @@ import pandas as pd
 import time
 import sqlite3
 
-def scrape_voitures_selenium(max_pages=100):
+def scrape_voitures_selenium(max_pages=5000):
     try:
         print("🚀 Démarrage du scraping...")
 
