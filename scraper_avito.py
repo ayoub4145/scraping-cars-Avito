@@ -11,6 +11,8 @@ import time
 import sqlite3
 
 def scrape_voitures_selenium():
+    driver = None
+    conn = None
     try:
         print("🚀 Démarrage du scraping...")
 
@@ -129,9 +131,10 @@ def scrape_voitures_selenium():
         except Exception as e:
             print(f"❌ Erreur lors de l'insertion dans SQLite : {e}")
     finally:
-        driver.quit()
-        conn.close()
-        print("🔒 Connexion SQLite fermée.")
-        print("🛑 Fermeture du navigateur.")
-        
+        if driver:
+            print("🛑 Fermeture du navigateur.")
+            driver.quit()
+        if conn:
+            print("🔒 Fermeture de la connexion SQLite."    )
+            conn.close()     
     return df
