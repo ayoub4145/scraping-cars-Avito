@@ -60,7 +60,7 @@ for _, row in df_filtré.iterrows():
             st.image(row["Image"], width=180)
         with cols[1]:
             st.subheader(row["Titre"])
-            st.write(f"💸 **Prix :** {row['Prix (DH)']:,} DH")
+            st.write(f"💸 **Prix :** {row['Prix']:,} DH")
             st.markdown(f"[🔗 Voir l'annonce sur Avito]({row['Lien']})")
         st.markdown("---")
 
