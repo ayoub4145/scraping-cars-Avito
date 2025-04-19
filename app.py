@@ -49,12 +49,7 @@ def load_filtered_data(budget_max):
 # Charger les données filtrées selon le budget
 df_filtré = load_filtered_data(budget)
 
-st.download_button(
-    "📥 Télécharger les résultats (.csv)",
-    df_filtré.to_csv(index=False).encode('utf-8'),
-    "voitures_filtrées.csv",
-    "text/csv"
-)
+
 if df_filtré.empty:
     st.warning(f"⚠️ Aucune voiture trouvée pour un budget ≤ {budget:,} DH.")
 else:
@@ -70,3 +65,10 @@ for _, row in df_filtré.iterrows():
             st.write(f"💸 **Prix :** {row['Prix']:,} DH")
             st.markdown(f"[🔗 Voir l'annonce sur Avito]({row['Lien']})")
         st.markdown("---")
+        
+st.download_button(
+    "📥 Télécharger les résultats (.csv)",
+    df_filtré.to_csv(index=False).encode('utf-8'),
+    "voitures_filtrées.csv",
+    "text/csv"
+)
