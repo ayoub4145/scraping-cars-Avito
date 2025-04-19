@@ -34,7 +34,7 @@ if not os.path.exists(DB_PATH) or get_last_update() is None or datetime.now() - 
         st.error(f"❌ Une erreur s'est produite lors du scraping : {e}")
 
 #  Choix du budget AVANT de charger les données
-budget = st.slider("💰 Budget maximum (DH)", min_value=10000, max_value=500000, step=5000)
+budget = st.slider("💰 Budget maximum (DH)",value=100000 ,min_value=10000, max_value=500000, step=5000)
 
 # Charger les données filtrées depuis SQLite
 @st.cache_data
@@ -44,6 +44,13 @@ def load_filtered_data(budget_max):
     df = pd.read_sql_query(query, conn, params=(budget_max,))
     conn.close()
     return df
+
+st.download_button(
+    "📥 Télécharger les résultats (.csv)",
+    df_filtré.to_csv(index=False).encode('utf-8'),
+    "voitures_filtrées.csv",
+    "text/csv"
+)
 
 # Charger les données filtrées selon le budget
 df_filtré = load_filtered_data(budget)
@@ -63,11 +70,3 @@ for _, row in df_filtré.iterrows():
             st.write(f"💸 **Prix :** {row['Prix']:,} DH")
             st.markdown(f"[🔗 Voir l'annonce sur Avito]({row['Lien']})")
         st.markdown("---")
-
-#  Export CSV
-st.download_button(
-    "📥 Télécharger les résultats (.csv)",
-    df_filtré.to_csv(index=False).encode('utf-8'),
-    "voitures_filtrées.csv",
-    "text/csv"
-)
