@@ -35,6 +35,7 @@ if not os.path.exists(DB_PATH) or get_last_update() is None or datetime.now() - 
 
 #  Choix du budget AVANT de charger les données
 budget = st.slider("💰 Budget maximum (DH)",value=100000 ,min_value=10000, max_value=500000, step=5000)
+voitures_par_page = 10
 
 # Charger les données filtrées depuis SQLite
 @st.cache_data
@@ -48,16 +49,14 @@ def load_filtered_data(budget_max):
 
 # Charger les données filtrées selon le budget
 df_filtré = load_filtered_data(budget)
+total_pages = (len(df_filtré) - 1) // voitures_par_page + 1
+page = st.number_input("📄 Page", min_value=1, max_value=total_pages, value=1, step=1)
 
 
 if df_filtré.empty:
     st.warning(f"⚠️ Aucune voiture trouvée pour un budget ≤ {budget:,} DH.")
 else:
     st.write(f"🔍 {len(df_filtré)} voiture(s) trouvée(s) pour un budget ≤ {budget:,} DH")
- # Pagination : 10 voitures par page
-    voitures_par_page = 10
-    total_pages = (len(df_filtré) - 1) // voitures_par_page + 1
-    page = st.number_input("📄 Page", min_value=1, max_value=total_pages, value=1, step=1)
 
     # Calcul des indices pour la pagination
     start_idx = (page - 1) * voitures_par_page
