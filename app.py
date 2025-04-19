@@ -74,6 +74,7 @@ for _, row in df_page.iterrows():
             st.markdown(f"[🔗 Voir l'annonce sur Avito]({row['Lien']})")
         st.markdown("---")
 st.write(f"📄 Page {page} sur {total_pages}")
+st.markdown("Developpé par [@Ayoub BERHILI](https://github.com/ayoub4145)")
 st.download_button(
     "📥 Télécharger les résultats (.csv)",
     df_filtré.to_csv(index=False).encode('utf-8'),
