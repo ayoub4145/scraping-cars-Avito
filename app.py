@@ -28,7 +28,7 @@ DB_PATH = "voitures.db"
 # Scraper si la base n'existe pas
 if not os.path.exists(DB_PATH) or get_last_update() is None or datetime.now()-get_last_update()>timedelta(hours=24):
     st.info("🔄 Base de données introuvable. Lancement du scraping...")
-    scrape_voitures_selenium(max_pages=100) 
+    scrape_voitures_selenium() 
 
 #  Choix du budget AVANT de charger les données
 budget = st.slider("💰 Budget maximum (DH)", min_value=10000, max_value=500000, step=5000)
