@@ -40,7 +40,7 @@ budget = st.slider("💰 Budget maximum (DH)", min_value=10000, max_value=500000
 @st.cache_data
 def load_filtered_data(budget_max):
     conn = sqlite3.connect(DB_PATH)
-    query = "SELECT * FROM voitures WHERE \"Prix (DH)\" <= ? ORDER BY \"Prix (DH)\" ASC"
+    query = "SELECT * FROM voitures WHERE \"Prix\" <= ? ORDER BY \"Prix\" ASC"
     df = pd.read_sql_query(query, conn, params=(budget_max,))
     conn.close()
     return df

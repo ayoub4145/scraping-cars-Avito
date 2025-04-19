@@ -109,7 +109,7 @@ def scrape_voitures_selenium():
         print(df.head())
 
         # Sauvegarde dans Excel
-        df.to_csv("voitures.xlsx", index=False)
+        #df.to_csv("voitures.xlsx", index=False)
 
         # Sauvegarde dans SQLite
         try:
