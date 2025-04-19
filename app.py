@@ -54,8 +54,17 @@ if df_filtré.empty:
     st.warning(f"⚠️ Aucune voiture trouvée pour un budget ≤ {budget:,} DH.")
 else:
     st.write(f"🔍 {len(df_filtré)} voiture(s) trouvée(s) pour un budget ≤ {budget:,} DH")
+ # Pagination : 10 voitures par page
+voitures_par_page = 10
+total_pages = (len(df_filtré) - 1) // voitures_par_page + 1
+page = st.number_input("📄 Page", min_value=1, max_value=total_pages, value=1, step=1)
+
+    # Calcul des indices pour la pagination
+start_idx = (page - 1) * voitures_par_page
+end_idx = start_idx + voitures_par_page
+df_page = df_filtré.iloc[start_idx:end_idx]
 #  Affichage des résultats
-for _, row in df_filtré.iterrows():
+for _, row in df_page.iterrows():
     with st.container():
         cols = st.columns([1, 2])
         with cols[0]:
@@ -65,7 +74,7 @@ for _, row in df_filtré.iterrows():
             st.write(f"💸 **Prix :** {row['Prix']:,} DH")
             st.markdown(f"[🔗 Voir l'annonce sur Avito]({row['Lien']})")
         st.markdown("---")
-        
+st.write(f"📄 Page {page} sur {total_pages}")
 st.download_button(
     "📥 Télécharger les résultats (.csv)",
     df_filtré.to_csv(index=False).encode('utf-8'),
