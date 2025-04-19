@@ -1,4 +1,3 @@
-# app.py
 
 import streamlit as st
 import pandas as pd
@@ -8,7 +7,7 @@ from scraper_avito import scrape_voitures_selenium
 from datetime import datetime, timedelta
 
 
-st.set_page_config(page_title="🚗 Voitures Avito", layout="wide")
+st.set_page_config(page_title="Voitures Avito", layout="wide",page_icon="https://credit-immo.avito.ma/storage/pwa/avitosalaf/icons/384x384.png")
 st.title("🚗 Recherche automatique de voitures sur Avito")
 
 LAST_UPDATE_FILE = "last_update.txt"
@@ -25,10 +24,14 @@ def set_last_update():
 
 DB_PATH = "voitures.db"
 
-# Scraper si la base n'existe pas
-if not os.path.exists(DB_PATH) or get_last_update() is None or datetime.now()-get_last_update()>timedelta(hours=24):
-    st.info("🔄 Base de données introuvable. Lancement du scraping...")
-    scrape_voitures_selenium() 
+if not os.path.exists(DB_PATH) or get_last_update() is None or datetime.now() - get_last_update() > timedelta(hours=24):
+    st.info("🔄 Base de données introuvable ou obsolète. Lancement du scraping...")
+    try:
+        scrape_voitures_selenium()
+        set_last_update()  # Mettre à jour la date de la dernière mise à jour
+        st.success("✅ Scraping terminé et base de données mise à jour.")
+    except Exception as e:
+        st.error(f"❌ Une erreur s'est produite lors du scraping : {e}")
 
 #  Choix du budget AVANT de charger les données
 budget = st.slider("💰 Budget maximum (DH)", min_value=10000, max_value=500000, step=5000)
@@ -45,8 +48,10 @@ def load_filtered_data(budget_max):
 # Charger les données filtrées selon le budget
 df_filtré = load_filtered_data(budget)
 
-st.write(f"🔍 {len(df_filtré)} voiture(s) trouvée(s) pour un budget ≤ {budget:,} DH")
-
+if df_filtré.empty:
+    st.warning(f"⚠️ Aucune voiture trouvée pour un budget ≤ {budget:,} DH.")
+else:
+    st.write(f"🔍 {len(df_filtré)} voiture(s) trouvée(s) pour un budget ≤ {budget:,} DH")
 #  Affichage des résultats
 for _, row in df_filtré.iterrows():
     with st.container():
