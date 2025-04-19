@@ -45,16 +45,16 @@ def load_filtered_data(budget_max):
     conn.close()
     return df
 
+
+# Charger les données filtrées selon le budget
+df_filtré = load_filtered_data(budget)
+
 st.download_button(
     "📥 Télécharger les résultats (.csv)",
     df_filtré.to_csv(index=False).encode('utf-8'),
     "voitures_filtrées.csv",
     "text/csv"
 )
-
-# Charger les données filtrées selon le budget
-df_filtré = load_filtered_data(budget)
-
 if df_filtré.empty:
     st.warning(f"⚠️ Aucune voiture trouvée pour un budget ≤ {budget:,} DH.")
 else:
